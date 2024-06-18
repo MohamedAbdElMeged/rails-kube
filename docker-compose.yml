@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - myapp-mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=userOnePassword
+      - MYSQL_USER=userOne
+      - MYSQL_PASSWORD=userOnePassword
+      - MYSQL_DATABASE=rails_kube
+
+
+  web:
+    build: .
+    command: bash -c "entrypoint.sh && bash init.sh"
+    restart: on-failure
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  myapp-mysql-data:
