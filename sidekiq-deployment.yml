@@ -1,20 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: myapp-worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp
+      app: myapp-worker
   template:
     metadata:
       labels:
-        app: myapp
+        app: myapp-worker
     spec:
+      volumes:
+        - name: script-volume
       containers:
-      - name: myapp
+      - name: myapp-worker
         image: mabdelmeged/myapp:latest
+        command: ["/bin/bash", "-c"]
+        args: ["/myapp/init.sh"]
         ports:
         - containerPort: 3000
         env:
@@ -26,5 +30,8 @@ spec:
           value: password
         - name: MYSQL_DATABASE
           value: myapp_development
+        - name: RUN_TYPE
+          value: worker
         - name: REDIS_HOST
           value: myapp-redis
+    

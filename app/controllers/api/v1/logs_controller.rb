@@ -1,8 +1,9 @@
 class Api::V1::LogsController < ApplicationController
     def create
-        log = Log.new(log_params)
-        if log.save
-            render json: {message: :ok}
+        log= Log.new(log_params)
+        if log.valid?
+            ImportLogs.perform_async(log.domain,log.actor,log.action,log.time_stamp)
+            render json: "will be added"
         else
             render json: log.errors
         end

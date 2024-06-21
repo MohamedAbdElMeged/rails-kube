@@ -27,6 +27,21 @@ services:
       - db
     env_file:
       - .env
-
+  redis:
+    image: redis:latest
+    restart: on-failure
+    ports:
+      - "6379:6479"
+  worker:
+    build: .
+    # image: mabdelmeged/myapp:latest
+    command: bundle exec sidekiq 
+    restart: on-failure
+    depends_on:
+      - db 
+      - redis
+    env_file:
+      - .env
+  
 volumes:
   myapp-mysql-data:
