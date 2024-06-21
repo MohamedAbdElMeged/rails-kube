@@ -14,6 +14,7 @@ services:
 
   web:
     build: .
+    image: mabdelmeged/myapp:latest
     command: bash -c "entrypoint.sh && bash init.sh"
     restart: on-failure
     stdin_open: true

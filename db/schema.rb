@@ -10,5 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_19_122315) do
+  create_table "logs", charset: "latin1", force: :cascade do |t|
+    t.string "action"
+    t.string "actor"
+    t.string "domain"
+    t.datetime "time_stamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
 end
